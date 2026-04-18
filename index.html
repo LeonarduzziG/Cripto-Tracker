@@ -179,17 +179,17 @@
     <div class="logo-sub">Pro v3.0</div>
   </div>
   <nav class="nav">
-    <div class="nav-item active" onclick="window.goPage&&window.goPage('dashboard',this)"><span class="nav-icon">◈</span><span>Dashboard</span></div>
-    <div class="nav-item" onclick="window.goPage&&window.goPage('operaciones',this)"><span class="nav-icon">＋</span><span>Nueva op.</span></div>
-    <div class="nav-item" onclick="window.goPage&&window.goPage('historial',this)"><span class="nav-icon">≡</span><span>Historial</span></div>
-    <div class="nav-item" onclick="window.goPage&&window.goPage('analisis',this)"><span class="nav-icon">◎</span><span>Análisis</span></div>
-    <div class="nav-item" onclick="window.goPage&&window.goPage('comparativa',this)"><span class="nav-icon">⇄</span><span>Comparativa</span></div>
+    <div class="nav-item active" id="nav-dashboard"><span class="nav-icon">◈</span><span>Dashboard</span></div>
+    <div class="nav-item" id="nav-operaciones"><span class="nav-icon">＋</span><span>Nueva op.</span></div>
+    <div class="nav-item" id="nav-historial"><span class="nav-icon">≡</span><span>Historial</span></div>
+    <div class="nav-item" id="nav-analisis"><span class="nav-icon">◎</span><span>Análisis</span></div>
+    <div class="nav-item" id="nav-comparativa"><span class="nav-icon">⇄</span><span>Comparativa</span></div>
   </nav>
   <div class="coin-pills">
     <div class="coin-pill-label">Activos</div>
-    <div class="coin-pill" onclick="window.goPage&&window.goPage('historial',null);window.setFilter&&window.setFilter('BTC')"><span class="coin-dot" style="background:var(--btc)"></span><span>Bitcoin</span></div>
-    <div class="coin-pill" onclick="window.goPage&&window.goPage('historial',null);window.setFilter&&window.setFilter('SOL')"><span class="coin-dot" style="background:var(--sol)"></span><span>Solana</span></div>
-    <div class="coin-pill" onclick="window.goPage&&window.goPage('historial',null);window.setFilter&&window.setFilter('BNB')"><span class="coin-dot" style="background:var(--bnb)"></span><span>BNB</span></div>
+    <div class="coin-pill" id="pill-btc"><span class="coin-dot" style="background:var(--btc)"></span><span>Bitcoin</span></div>
+    <div class="coin-pill" id="pill-sol"><span class="coin-dot" style="background:var(--sol)"></span><span>Solana</span></div>
+    <div class="coin-pill" id="pill-bnb"><span class="coin-dot" style="background:var(--bnb)"></span><span>BNB</span></div>
   </div>
   <div class="sync-status">
     <span class="sync-dot syncing" id="sync-dot"></span>
@@ -209,8 +209,8 @@
       <div class="topbar-date" id="page-date"></div>
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <button class="btn-ghost" onclick="window.exportCSV&&window.exportCSV()">↓ Exportar CSV</button>
-      <button class="btn-primary" onclick="window.goPage&&window.goPage('operaciones',null)">+ Nueva operación</button>
+      <button class="btn-ghost" id="btn-csv">↓ Exportar CSV</button>
+      <button class="btn-primary" id="btn-nueva-op">+ Nueva operación</button>
     </div>
   </div>
 
@@ -262,9 +262,9 @@
           </div>
         </div>
         <div class="form-grid">
-          <div class="field"><label>Precio de mercado (USD)</label><input type="number" id="f-price" placeholder="ej: 77072" step="any" min="0" oninput="window.updatePreview&&window.updatePreview()"/></div>
-          <div class="field"><label>Monto en USD (lo que gastás)</label><input type="number" id="f-usd" placeholder="ej: 11" step="any" min="0" oninput="window.updatePreview&&window.updatePreview()"/></div>
-          <div class="field"><label>Comisión (USD)</label><input type="number" id="f-fee" placeholder="0.00" step="any" min="0" value="0" oninput="window.updatePreview&&window.updatePreview()"/></div>
+          <div class="field"><label>Precio de mercado (USD)</label><input type="number" id="f-price" placeholder="ej: 77072" step="any" min="0" /></div>
+          <div class="field"><label>Monto en USD (lo que gastás)</label><input type="number" id="f-usd" placeholder="ej: 11" step="any" min="0" /></div>
+          <div class="field"><label>Comisión (USD)</label><input type="number" id="f-fee" placeholder="0.00" step="any" min="0" value="0" /></div>
           <div class="field"><label>Nota</label><input type="text" id="f-note" placeholder="ej: DCA semanal" maxlength="80"/></div>
         </div>
       </div>
@@ -275,8 +275,8 @@
         <div class="preview-row" id="pv-pnl-row" style="display:none"><span class="preview-key">P/L estimado</span><span class="preview-val" id="pv-pnl">—</span></div>
       </div>
       <div style="display:flex;gap:8px;margin-top:1rem">
-        <button class="btn-primary" id="btn-registrar" onclick="window.addTrade&&window.addTrade()">Registrar operación</button>
-        <button class="btn-ghost" onclick="window.clearForm&&window.clearForm()">Limpiar</button>
+        <button class="btn-primary" id="btn-registrar" >Registrar operación</button>
+        <button class="btn-ghost" id="btn-limpiar">Limpiar</button>
       </div>
     </div>
   </div>
@@ -285,12 +285,12 @@
     <div class="section-header"><h2>Historial de operaciones</h2></div>
     <div class="filter-bar">
       <span style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em">Filtro:</span>
-      <button class="filter-chip active" onclick="window.setFilter&&window.setFilter('ALL',this)">Todos</button>
-      <button class="filter-chip" onclick="window.setFilter&&window.setFilter('BTC',this)">BTC</button>
-      <button class="filter-chip" onclick="window.setFilter&&window.setFilter('SOL',this)">SOL</button>
-      <button class="filter-chip" onclick="window.setFilter&&window.setFilter('BNB',this)">BNB</button>
-      <button class="filter-chip" onclick="window.setFilter&&window.setFilter('buy',this)">Compras</button>
-      <button class="filter-chip" onclick="window.setFilter&&window.setFilter('sell',this)">Ventas</button>
+      <button class="filter-chip active" id="fc-all">Todos</button>
+      <button class="filter-chip" id="fc-btc">BTC</button>
+      <button class="filter-chip" id="fc-sol">SOL</button>
+      <button class="filter-chip" id="fc-bnb">BNB</button>
+      <button class="filter-chip" id="fc-buy">Compras</button>
+      <button class="filter-chip" id="fc-sell">Ventas</button>
     </div>
     <div class="card" style="padding:0"><div class="table-wrap" id="historial-table-wrap"></div></div>
   </div>
@@ -696,6 +696,55 @@ function showToast(msg,err=false){
   setTimeout(()=>t.classList.remove('show'),3500);
 }
 window.toast=showToast;
+
+// ── EVENT LISTENERS (reemplaza todos los onclick/oninput del HTML) ──
+document.addEventListener('DOMContentLoaded', function() {
+  // Nav
+  var navItems = {
+    'nav-dashboard': 'dashboard',
+    'nav-operaciones': 'operaciones',
+    'nav-historial': 'historial',
+    'nav-analisis': 'analisis',
+    'nav-comparativa': 'comparativa'
+  };
+  Object.keys(navItems).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('click', function() { goPage(navItems[id], el); });
+  });
+
+  // Pills
+  var pill = document.getElementById('pill-btc');
+  if (pill) pill.addEventListener('click', function(){ goPage('historial',null); setFilter('BTC'); });
+  pill = document.getElementById('pill-sol');
+  if (pill) pill.addEventListener('click', function(){ goPage('historial',null); setFilter('SOL'); });
+  pill = document.getElementById('pill-bnb');
+  if (pill) pill.addEventListener('click', function(){ goPage('historial',null); setFilter('BNB'); });
+
+  // Buttons
+  var el = document.getElementById('btn-nueva-op');
+  if (el) el.addEventListener('click', function(){ goPage('operaciones',null); });
+  el = document.getElementById('btn-csv');
+  if (el) el.addEventListener('click', exportCSV);
+  el = document.getElementById('btn-registrar');
+  if (el) el.addEventListener('click', addTrade);
+  el = document.getElementById('btn-limpiar');
+  if (el) el.addEventListener('click', clearForm);
+
+  // Filter chips
+  var filters = {'fc-all':'ALL','fc-btc':'BTC','fc-sol':'SOL','fc-bnb':'BNB','fc-buy':'buy','fc-sell':'sell'};
+  Object.keys(filters).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('click', function(){ setFilter(filters[id], el); });
+  });
+
+  // Form inputs
+  ['f-price','f-usd','f-fee','f-coin','f-type'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', updatePreview);
+    if (el) el.addEventListener('change', updatePreview);
+  });
+});
+
 </script>
 </body>
 </html>
