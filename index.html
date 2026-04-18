@@ -343,8 +343,6 @@ let currentFilter = 'ALL';
 // ── INIT ─────────────────────────────────────────────────────────
 document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 document.getElementById('page-date').textContent = new Date().toLocaleDateString('es-AR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-document.getElementById('f-coin').addEventListener('change', updatePreview);
-document.getElementById('f-type').addEventListener('change', updatePreview);
 
 // ── LISTENER EN TIEMPO REAL ──────────────────────────────────────
 setSyncStatus('syncing','Conectando...');
