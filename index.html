@@ -252,6 +252,7 @@
             </select>
           </div>
           <div class="field"><label>Fecha</label><input type="date" id="f-date"/></div>
+          <div class="field"><label>Hora</label><input type="time" id="f-time"/></div>
           <div class="field"><label>Exchange</label>
             <select id="f-exchange">
               <option value="Binance">Binance</option>
@@ -342,6 +343,7 @@ let currentFilter = 'ALL';
 
 // ── INIT ─────────────────────────────────────────────────────────
 document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value = new Date().toTimeString().slice(0,5);
 document.getElementById('page-date').textContent = new Date().toLocaleDateString('es-AR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
 // ── LISTENER EN TIEMPO REAL ──────────────────────────────────────
@@ -492,9 +494,9 @@ function renderHistorial(s) {
   else if(currentFilter==='sell')f=f.filter(t=>t.type==='sell');
   const w=document.getElementById('historial-table-wrap');
   if(!f.length){w.innerHTML=`<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">Sin resultados</div></div>`;return;}
-  w.innerHTML=`<table><thead><tr><th>Fecha</th><th>Moneda</th><th>Tipo</th><th>USD</th><th>Precio</th><th>Crypto</th><th>Comisión</th><th>P/L</th><th>Exchange</th><th>Nota</th><th></th></tr></thead>
+  w.innerHTML=`<table><thead><tr><th>Fecha</th><th>Hora</th><th>Moneda</th><th>Tipo</th><th>USD</th><th>Precio</th><th>Crypto</th><th>Comisión</th><th>P/L</th><th>Exchange</th><th>Nota</th><th></th></tr></thead>
   <tbody>${[...f].reverse().map(t=>`<tr>
-    <td>${t.date}</td><td><span class="badge badge-${t.coin.toLowerCase()}">${t.coin}</span></td>
+    <td>${t.date}</td><td style="color:var(--text2)">${t.time||'—'}</td><td><span class="badge badge-${t.coin.toLowerCase()}">${t.coin}</span></td>
     <td><span class="badge badge-${t.type}">${t.type==='buy'?'Compra':'Venta'}</span></td>
     <td>$${fmt(t.usd||t.amount*t.price)}</td><td>$${fmt(t.price)}</td>
     <td>${t.amount.toFixed(8)}</td><td>$${fmt(t.fee||0)}</td>
@@ -597,6 +599,7 @@ window.addTrade = async function() {
   const usd=parseFloat(document.getElementById('f-usd').value);
   const fee=parseFloat(document.getElementById('f-fee').value)||0;
   const date=document.getElementById('f-date').value;
+  const time=document.getElementById('f-time').value||'--:--';
   const note=document.getElementById('f-note').value.trim();
   const exchange=document.getElementById('f-exchange').value;
 
@@ -607,7 +610,7 @@ window.addTrade = async function() {
   btn.disabled=true; btn.textContent='Guardando...';
   setSyncStatus('syncing','Guardando...');
   try {
-    await addDoc(col,{coin,type,amount,price,usd,fee,date,note,exchange,ts:Date.now()});
+    await addDoc(col,{coin,type,amount,price,usd,fee,date,time,note,exchange,ts:Date.now()});
     clearForm();
     showToast(`✓ $${usd} → ${amount.toFixed(8)} ${coin} guardado automáticamente`);
   } catch(e) {
@@ -654,6 +657,7 @@ window.updatePreview = function() {
 
 window.clearForm = function() {
   ['f-price','f-usd','f-note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-time').value = new Date().toTimeString().slice(0,5);
   document.getElementById('f-fee').value='0';
   document.getElementById('preview').style.display='none';
 };
